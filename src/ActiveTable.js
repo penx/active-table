@@ -5,7 +5,8 @@ export const TableContext = createContext({
   activeColumn: null
 });
 
-export const SetTableContext = createContext(() => {});
+
+export const SetTableContext = createContext();
 
 export const RowIdContext = createContext(null);
 export const IsActiveCellContext = createContext({
