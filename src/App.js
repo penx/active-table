@@ -37,9 +37,8 @@ const MyPoint = () => {
 
 const MemoStyledRow = React.memo(StyledRow);
 
-const RowOuter = React.memo(({ id, onMouseEnter, children }) => {
-  const { activeRow } = useContext(HoverTable.TableContext);
-  const isActiveRow = id === activeRow; /*TODO: use rowcontext for this?*/
+const RowOuter = React.memo(({ onMouseEnter, children }) => {
+  const isActiveRow = useContext(HoverTable.IsActiveRowContext);
 
   return (
     <MemoStyledRow
