@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useCallback } from "react";
+import React, { useContext, useCallback } from "react";
 
 import * as ActiveTable from "./ActiveTable";
 
@@ -16,34 +16,24 @@ export const Row = ({ id, children, render }) => {
   const { setActiveRow } = useContext(ActiveTable.SetTableContext);
   const { onMouseEnter } = useSetOnEnter(id, setActiveRow);
 
-  return useMemo(
-    () => (
-      <ActiveTable.Row
-        id={id}
-        onMouseEnter={onMouseEnter}
-        children={children}
-        render={render}
-      />
-    ),
-    [id, children, onMouseEnter, render]
-  );
+  return <ActiveTable.Row
+    id={id}
+    onMouseEnter={onMouseEnter}
+    children={children}
+    render={render}
+  />;
 };
 
 export const Cell = ({ columnId, children, render }) => {
   const { setActiveColumn } = useContext(ActiveTable.SetTableContext);
   const { onMouseEnter } = useSetOnEnter(columnId, setActiveColumn);
 
-  return useMemo(
-    () => (
-      <ActiveTable.Cell
-        columnId={columnId}
-        children={children}
-        onMouseEnter={onMouseEnter}
-        render={render}
-      />
-    ),
-    [columnId, children, onMouseEnter, render]
-  );
+  return <ActiveTable.Cell
+    columnId={columnId}
+    children={children}
+    onMouseEnter={onMouseEnter}
+    render={render}
+  />;
 };
 
 export * from "./ActiveTable";

@@ -35,19 +35,17 @@ const MyPoint = () => {
   return <Point isActive={isActive} />;
 };
 
-const MemoStyledRow = React.memo(StyledRow);
-
-const RowOuter = React.memo(({ onMouseEnter, children }) => {
+const RowOuter = ({ onMouseEnter, children }) => {
   const isActiveRow = useContext(HoverTable.IsActiveRowContext);
 
   return (
-    <MemoStyledRow
+    <StyledRow
       isActiveRow={isActiveRow}
       onMouseEnter={onMouseEnter}
       children={children}
     />
   );
-});
+};
 
 const Row = props => (
   <HoverTable.Row {...props} render={props => <RowOuter {...props} />} />
@@ -66,7 +64,11 @@ export default function App() {
       <HoverTable.default>
         <div>
           <HoverTable.TableContext.Consumer>
-            {({activeColumn, activeRow}) => <>{activeColumn}, {activeRow}</>}
+            {({ activeColumn, activeRow }) => (
+              <>
+                {activeColumn}, {activeRow}
+              </>
+            )}
           </HoverTable.TableContext.Consumer>
         </div>
         <Table>

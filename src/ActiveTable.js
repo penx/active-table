@@ -6,6 +6,7 @@ const RowIdContext = createContext();
 const IsActiveRowContext = createContext();
 const IsActiveCellContext = createContext();
 
+// Optional memo - used as a direct child of another provider
 const SetTableProvider = React.memo(
   ({ setActiveRow, setActiveColumn, children }) => (
     <SetTableContext.Provider
@@ -16,15 +17,17 @@ const SetTableProvider = React.memo(
 );
 
 const TableProvider = React.memo(
-  ({ activeRow, activeColumn, setActiveRow, setActiveColumn, children }) => (
-    <TableContext.Provider value={{ activeRow, activeColumn }}>
+  ({ activeRow, activeColumn, setActiveRow, setActiveColumn, children }) => {
+    // Required memo - we want to store a key-value pair in state
+    const context = useMemo(() => ({ activeRow, activeColumn }), [activeRow, activeColumn]);
+    return <TableContext.Provider value={context}>
       <SetTableProvider
         setActiveRow={setActiveRow}
         setActiveColumn={setActiveColumn}
         children={children}
       />
     </TableContext.Provider>
-  )
+  }
 );
 
 const Table = ({ children }) => {
@@ -41,9 +44,11 @@ const Table = ({ children }) => {
   );
 };
 
+// Optional memo - used as a direct child of another provider
 const IsActiveRowProvider = React.memo(({ id, children }) => {
   const { activeRow } = useContext(TableContext);
   const isActiveRow = id === activeRow;
+  // Optional memo - state change is on string but we only need to update the provider on boolean
   return useMemo(
     () => (
       <IsActiveRowContext.Provider value={isActiveRow} children={children} />
@@ -52,8 +57,7 @@ const IsActiveRowProvider = React.memo(({ id, children }) => {
   );
 });
 
-const Row = React.memo(
-  ({ id, render = props => <tr {...props} />, ...props }) => {
+const Row = ({ id, render = props => <tr {...props} />, ...props }) => {
     return (
       <RowIdContext.Provider value={id}>
         <IsActiveRowProvider id={id}>
@@ -62,13 +66,13 @@ const Row = React.memo(
       </RowIdContext.Provider>
     );
   }
-);
 
-const IsActiveCellProvider = React.memo(({ children, columnId }) => {
+const IsActiveCellProvider = ({ children, columnId }) => {
   const rowId = useContext(RowIdContext);
   const { activeRow, activeColumn } = useContext(TableContext);
   const isActiveColumn = columnId === activeColumn;
   const isActive = rowId === activeRow && columnId === activeColumn;
+  // Required memo - we want to store a key-value pair in state
   const context = useMemo(() => ({ isActiveColumn, isActive }), [isActiveColumn, isActive]);
   return (
     <IsActiveCellContext.Provider
@@ -77,13 +81,13 @@ const IsActiveCellProvider = React.memo(({ children, columnId }) => {
       {children}
     </IsActiveCellContext.Provider>
   );
-});
+};
 
-const Cell = React.memo(({ columnId, render = props => <td {...props} />, ...props }) => (
+const Cell = ({ columnId, render = props => <td {...props} />, ...props }) => (
   <IsActiveCellProvider columnId={columnId}>
     {render(props)}
   </IsActiveCellProvider>
-));
+);
 
 export {
   IsActiveCellContext,
