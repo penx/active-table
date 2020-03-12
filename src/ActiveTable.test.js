@@ -118,4 +118,50 @@ describe("ActiveTable", () => {
     fireEvent.click(getByText(buttonTextRow));
     expect(getByText(testMessageCell)).toBeInTheDocument();
   });
+
+  it("TableContext.Consumer reports correct active column and row after using SetTableContext.Consumer", () => {
+    const buttonTextColumn = "Select column one";
+    const buttonTextRow = "Select row one";
+    const { getByText, queryByText } = render(
+      <ActiveTable.default>
+        <div>
+          <ActiveTable.SetTableContext.Consumer>
+            {({ setActiveColumn, setActiveRow }) => (
+              <>
+                <button
+                  onClick={() => {
+                    setActiveColumn("column-one");
+                  }}
+                >
+                  {buttonTextColumn}
+                </button>
+                <button
+                  onClick={() => {
+                    setActiveRow("row-one");
+                  }}
+                >
+                  {buttonTextRow}
+                </button>
+              </>
+            )}
+          </ActiveTable.SetTableContext.Consumer>
+        </div>
+        <ActiveTable.TableContext.Consumer>
+            {({activeColumn, activeRow}) => `${activeColumn}, ${activeRow}`}
+        </ActiveTable.TableContext.Consumer>
+        <table>
+          <tbody>
+            <ActiveTable.Row id="row-one">
+              <ActiveTable.Cell columnId="column-one">
+                  Example Cell
+              </ActiveTable.Cell>
+            </ActiveTable.Row>
+          </tbody>
+        </table>
+      </ActiveTable.default>
+    );
+    fireEvent.click(getByText(buttonTextColumn));
+    fireEvent.click(getByText(buttonTextRow));
+    expect(getByText("column-one, row-one")).toBeInTheDocument();
+  });
 });
