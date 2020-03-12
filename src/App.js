@@ -65,6 +65,11 @@ export default function App() {
     <div className="App">
       Hover over a cell
       <HoverTable.default>
+        <div>
+          <HoverTable.TableContext.Consumer>
+            {({activeColumn, activeRow}) => <>{activeColumn}, {activeRow}</>}
+          </HoverTable.TableContext.Consumer>
+        </div>
         <Table>
           <Row id="row-one">
             <MyCell columnId="column-one" />
