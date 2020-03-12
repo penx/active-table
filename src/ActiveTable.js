@@ -8,12 +8,14 @@ const IsActiveCellContext = createContext();
 
 // Optional memo - used as a direct child of another provider
 const SetTableProvider = React.memo(
-  ({ setActiveRow, setActiveColumn, children }) => (
-    <SetTableContext.Provider
-      value={{ setActiveColumn, setActiveRow }}
-      children={children}
-    />
-  )
+  ({ setActiveRow, setActiveColumn, children }) => {
+    // Required memo - we want to store a key-value pair in state
+    const context = useMemo(() => ({ setActiveColumn, setActiveRow }), [
+      setActiveColumn,
+      setActiveRow
+    ]);
+    return <SetTableContext.Provider value={context} children={children} />;
+  }
 );
 
 const TableProvider = ({
