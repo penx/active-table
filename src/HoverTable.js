@@ -2,7 +2,7 @@ import React, { useContext, useCallback } from "react";
 
 import * as ActiveTable from "./ActiveTable";
 
-function useSetOnEnter(value, set) {
+const useSetOnMouseEnter = (value, set) => {
   const handleMouseEnter = useCallback(() => {
     set(value);
   }, [set, value]);
@@ -14,7 +14,7 @@ function useSetOnEnter(value, set) {
 
 export const Row = ({ id, children, render }) => {
   const { setActiveRow } = useContext(ActiveTable.SetTableContext);
-  const { onMouseEnter } = useSetOnEnter(id, setActiveRow);
+  const { onMouseEnter } = useSetOnMouseEnter(id, setActiveRow);
 
   return <ActiveTable.Row
     id={id}
@@ -26,7 +26,7 @@ export const Row = ({ id, children, render }) => {
 
 export const Cell = ({ columnId, children, render }) => {
   const { setActiveColumn } = useContext(ActiveTable.SetTableContext);
-  const { onMouseEnter } = useSetOnEnter(columnId, setActiveColumn);
+  const { onMouseEnter } = useSetOnMouseEnter(columnId, setActiveColumn);
 
   return <ActiveTable.Cell
     columnId={columnId}
