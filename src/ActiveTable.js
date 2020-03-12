@@ -16,19 +16,28 @@ const SetTableProvider = React.memo(
   )
 );
 
-const TableProvider = React.memo(
-  ({ activeRow, activeColumn, setActiveRow, setActiveColumn, children }) => {
-    // Required memo - we want to store a key-value pair in state
-    const context = useMemo(() => ({ activeRow, activeColumn }), [activeRow, activeColumn]);
-    return <TableContext.Provider value={context}>
+const TableProvider = ({
+  activeRow,
+  activeColumn,
+  setActiveRow,
+  setActiveColumn,
+  children
+}) => {
+  // Required memo - we want to store a key-value pair in state
+  const context = useMemo(() => ({ activeRow, activeColumn }), [
+    activeRow,
+    activeColumn
+  ]);
+  return (
+    <TableContext.Provider value={context}>
       <SetTableProvider
         setActiveRow={setActiveRow}
         setActiveColumn={setActiveColumn}
         children={children}
       />
     </TableContext.Provider>
-  }
-);
+  );
+};
 
 const Table = ({ children }) => {
   const [activeRow, setActiveRow] = useState();
@@ -58,14 +67,14 @@ const IsActiveRowProvider = React.memo(({ id, children }) => {
 });
 
 const Row = ({ id, render = props => <tr {...props} />, ...props }) => {
-    return (
-      <RowIdContext.Provider value={id}>
-        <IsActiveRowProvider id={id}>
-          {render({ id, ...props })}
-        </IsActiveRowProvider>
-      </RowIdContext.Provider>
-    );
-  }
+  return (
+    <RowIdContext.Provider value={id}>
+      <IsActiveRowProvider id={id}>
+        {render({ id, ...props })}
+      </IsActiveRowProvider>
+    </RowIdContext.Provider>
+  );
+};
 
 const IsActiveCellProvider = ({ children, columnId }) => {
   const rowId = useContext(RowIdContext);
@@ -73,11 +82,12 @@ const IsActiveCellProvider = ({ children, columnId }) => {
   const isActiveColumn = columnId === activeColumn;
   const isActive = rowId === activeRow && columnId === activeColumn;
   // Required memo - we want to store a key-value pair in state
-  const context = useMemo(() => ({ isActiveColumn, isActive }), [isActiveColumn, isActive]);
+  const context = useMemo(() => ({ isActiveColumn, isActive }), [
+    isActiveColumn,
+    isActive
+  ]);
   return (
-    <IsActiveCellContext.Provider
-      value={context}
-    >
+    <IsActiveCellContext.Provider value={context}>
       {children}
     </IsActiveCellContext.Provider>
   );
