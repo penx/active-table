@@ -26,14 +26,13 @@ const ActiveCell = props => {
   );
 };
 
-const ActiveRow = ({ onMouseEnter, children }) => {
+const ActiveRow = props => {
   const isActiveRow = useContext(HoverTable.IsActiveRowContext);
 
   return (
     <StyledRow
       isActiveRow={isActiveRow}
-      onMouseEnter={onMouseEnter}
-      children={children}
+      {...props}
     />
   );
 };
