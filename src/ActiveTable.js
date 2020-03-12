@@ -18,13 +18,9 @@ const SetTableProvider = React.memo(
   }
 );
 
-const TableProvider = ({
-  activeRow,
-  activeColumn,
-  setActiveRow,
-  setActiveColumn,
-  children
-}) => {
+const Table = ({ children }) => {
+  const [activeRow, setActiveRow] = useState();
+  const [activeColumn, setActiveColumn] = useState();
   // Required memo - we want to store a key-value pair in state
   const context = useMemo(() => ({ activeRow, activeColumn }), [
     activeRow,
@@ -38,20 +34,6 @@ const TableProvider = ({
         children={children}
       />
     </TableContext.Provider>
-  );
-};
-
-const Table = ({ children }) => {
-  const [activeRow, setActiveRow] = useState();
-  const [activeColumn, setActiveColumn] = useState();
-  return (
-    <TableProvider
-      activeRow={activeRow}
-      activeColumn={activeColumn}
-      setActiveRow={setActiveRow}
-      setActiveColumn={setActiveColumn}
-      children={children}
-    />
   );
 };
 
