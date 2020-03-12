@@ -1,25 +1,15 @@
 import React, { useContext, createContext, useState, useMemo } from "react";
 
-const TableContext = createContext({
-  activeRow: null,
-  activeColumn: null
-});
-
-
+const TableContext = createContext();
 const SetTableContext = createContext();
-
-const RowIdContext = createContext(null);
-const IsActiveRowContext = createContext(null);
-
-const IsActiveCellContext = createContext({
-  isActiveColumn: false,
-  isActive: false
-});
+const RowIdContext = createContext();
+const IsActiveRowContext = createContext();
+const IsActiveCellContext = createContext();
 
 const SetTableProvider = React.memo(
   ({ setActiveRow, setActiveColumn, children }) => (
     <SetTableContext.Provider
-      value={{ setActiveColumn, setActiveRow }} //setActiveRow
+      value={{ setActiveColumn, setActiveRow }}
       children={children}
     />
   )
@@ -56,62 +46,51 @@ const IsActiveRowProvider = React.memo(({ id, children }) => {
   const isActiveRow = id === activeRow;
   return useMemo(
     () => (
-      <IsActiveRowContext.Provider
-        value={
-          isActiveRow
-        }
-        children={children}
-      />
+      <IsActiveRowContext.Provider value={isActiveRow} children={children} />
     ),
     [isActiveRow, children]
   );
 });
 
 const Row = React.memo(
-  ({
-    id,
-    onMouseEnter,
-    children,
-    render = ({ onMouseEnter, children }) => (
-      <tr onMouseEnter={onMouseEnter} children={children} />
-    )
-  }) => {
+  ({ id, render = props => <tr {...props} />, ...props }) => {
     return (
       <RowIdContext.Provider value={id}>
         <IsActiveRowProvider id={id}>
-          {render({ onMouseEnter, children, id })}
+          {render({ id, ...props })}
         </IsActiveRowProvider>
       </RowIdContext.Provider>
     );
   }
 );
 
-const Cell = ({
-  columnId,
-  children,
-  onMouseEnter,
-  render = ({ children, onMouseEnter }) => (
-    <td children={children} onMouseEnter={onMouseEnter} />
-  )
-}) => {
+const IsActiveCellProvider = React.memo(({ children, columnId }) => {
   const rowId = useContext(RowIdContext);
   const { activeRow, activeColumn } = useContext(TableContext);
   const isActiveColumn = columnId === activeColumn;
   const isActive = rowId === activeRow && columnId === activeColumn;
-  return useMemo(
-    () => (
-      <IsActiveCellContext.Provider
-        value={{
-          isActiveColumn,
-          isActive
-        }}
-      >
-        {render({ children, onMouseEnter })}
-      </IsActiveCellContext.Provider>
-    ),
-    [isActiveColumn, isActive, children, onMouseEnter, render]
+  const context = useMemo(() => ({ isActiveColumn, isActive }), [isActiveColumn, isActive]);
+  return (
+    <IsActiveCellContext.Provider
+      value={context}
+    >
+      {children}
+    </IsActiveCellContext.Provider>
   );
-};
+});
 
-export { IsActiveCellContext, IsActiveRowContext, SetTableContext, Cell, Row, TableContext}
+const Cell = React.memo(({ columnId, render = props => <td {...props} />, ...props }) => (
+  <IsActiveCellProvider columnId={columnId}>
+    {render(props)}
+  </IsActiveCellProvider>
+));
+
+export {
+  IsActiveCellContext,
+  IsActiveRowContext,
+  SetTableContext,
+  Cell,
+  Row,
+  TableContext
+};
 export default Table;
