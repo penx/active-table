@@ -2,7 +2,7 @@ import React, { useContext, useCallback } from "react";
 
 import * as ActiveTable from "./ActiveTable";
 
-export const Row = ({ id, children, render }) => {
+export const Row = ({ id, ...props }) => {
   const { setActiveRow } = useContext(ActiveTable.SetTableContext);
   const onMouseEnter = useCallback(() => {
     setActiveRow(id);
@@ -11,12 +11,11 @@ export const Row = ({ id, children, render }) => {
   return <ActiveTable.Row
     id={id}
     onMouseEnter={onMouseEnter}
-    children={children}
-    render={render}
+    {...props}
   />;
 };
 
-export const Cell = ({ columnId, children, render }) => {
+export const Cell = ({ columnId, ...props }) => {
   const { setActiveColumn } = useContext(ActiveTable.SetTableContext);
   const onMouseEnter = useCallback(() => {
     setActiveColumn(columnId);
@@ -24,9 +23,8 @@ export const Cell = ({ columnId, children, render }) => {
 
   return <ActiveTable.Cell
     columnId={columnId}
-    children={children}
     onMouseEnter={onMouseEnter}
-    render={render}
+    {...props}
   />;
 };
 
