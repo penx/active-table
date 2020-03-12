@@ -55,8 +55,8 @@ const Table = ({ children }) => {
   );
 };
 
-// Optional memo - used as a direct child of another provider
-const IsActiveRowProvider = React.memo(({ id, children }) => {
+// No memo - is used as a child of another context provider, but that context rarely changes (row id)
+const IsActiveRowProvider = ({ id, children }) => {
   const { activeRow } = useContext(TableContext);
   const isActiveRow = id === activeRow;
   // Optional memo - state change is on string but we only need to update the provider on boolean
@@ -66,7 +66,7 @@ const IsActiveRowProvider = React.memo(({ id, children }) => {
     ),
     [isActiveRow, children]
   );
-});
+};
 
 const Row = ({ id, render = props => <tr {...props} />, ...props }) => {
   return (
