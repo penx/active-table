@@ -11,13 +11,7 @@ import {
   Point
 } from "./styles";
 
-const MyCell = props => (
-  <HoverTable.Cell {...props} render={props => <InnerCell {...props} />}>
-    <MyPoint />
-  </HoverTable.Cell>
-);
-
-const InnerCell = props => {
+const ActiveCell = props => {
   const { isActive, isActiveColumn } = useContext(
     HoverTable.IsActiveCellContext
   );
@@ -26,16 +20,13 @@ const InnerCell = props => {
       isActive={isActive}
       isActiveColumn={isActiveColumn}
       {...props}
-    />
+    >
+      <Point isActive={isActive} />
+    </StyledCell>
   );
 };
 
-const MyPoint = () => {
-  const { isActive } = useContext(HoverTable.IsActiveCellContext);
-  return <Point isActive={isActive} />;
-};
-
-const RowOuter = ({ onMouseEnter, children }) => {
+const ActiveRow = ({ onMouseEnter, children }) => {
   const isActiveRow = useContext(HoverTable.IsActiveRowContext);
 
   return (
@@ -47,11 +38,15 @@ const RowOuter = ({ onMouseEnter, children }) => {
   );
 };
 
-const Row = props => (
-  <HoverTable.Row {...props} render={props => <RowOuter {...props} />} />
+const CustomCell = props => (
+  <HoverTable.Cell {...props} render={props => <ActiveCell {...props} />} />
 );
 
-const Table = props => (
+const CustomRow = props => (
+  <HoverTable.Row {...props} render={props => <ActiveRow {...props} />} />
+);
+
+const CustomTable = props => (
   <StyledTable>
     <StyledTableBody {...props} />
   </StyledTable>
@@ -71,36 +66,36 @@ export default function App() {
             )}
           </HoverTable.TableContext.Consumer>
         </div>
-        <Table>
-          <Row id="row-one">
-            <MyCell columnId="column-one" />
-            <MyCell columnId="column-two" />
-            <MyCell columnId="column-three" />
-            <MyCell columnId="column-four" />
-            <MyCell columnId="column-five" />
-          </Row>
-          <Row id="row-two">
-            <MyCell columnId="column-one" />
-            <MyCell columnId="column-two" />
-            <MyCell columnId="column-three" />
-            <MyCell columnId="column-four" />
-            <MyCell columnId="column-five" />
-          </Row>
-          <Row id="row-three">
-            <MyCell columnId="column-one" />
-            <MyCell columnId="column-two" />
-            <MyCell columnId="column-three" />
-            <MyCell columnId="column-four" />
-            <MyCell columnId="column-five" />
-          </Row>
-          <Row id="row-four">
-            <MyCell columnId="column-one" />
-            <MyCell columnId="column-two" />
-            <MyCell columnId="column-three" />
-            <MyCell columnId="column-four" />
-            <MyCell columnId="column-five" />
-          </Row>
-        </Table>
+        <CustomTable>
+          <CustomRow id="row-one">
+            <CustomCell columnId="column-one" />
+            <CustomCell columnId="column-two" />
+            <CustomCell columnId="column-three" />
+            <CustomCell columnId="column-four" />
+            <CustomCell columnId="column-five" />
+          </CustomRow>
+          <CustomRow id="row-two">
+            <CustomCell columnId="column-one" />
+            <CustomCell columnId="column-two" />
+            <CustomCell columnId="column-three" />
+            <CustomCell columnId="column-four" />
+            <CustomCell columnId="column-five" />
+          </CustomRow>
+          <CustomRow id="row-three">
+            <CustomCell columnId="column-one" />
+            <CustomCell columnId="column-two" />
+            <CustomCell columnId="column-three" />
+            <CustomCell columnId="column-four" />
+            <CustomCell columnId="column-five" />
+          </CustomRow>
+          <CustomRow id="row-four">
+            <CustomCell columnId="column-one" />
+            <CustomCell columnId="column-two" />
+            <CustomCell columnId="column-three" />
+            <CustomCell columnId="column-four" />
+            <CustomCell columnId="column-five" />
+          </CustomRow>
+        </CustomTable>
       </HoverTable.default>
     </div>
   );
