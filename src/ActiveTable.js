@@ -50,11 +50,11 @@ const IsActiveRowProvider = ({ id, children }) => {
   );
 };
 
-const Row = ({ id, render = props => <tr {...props} />, ...props }) => {
+const Row = ({ id, children }) => {
   return (
     <RowIdContext.Provider value={id}>
       <IsActiveRowProvider id={id}>
-        {render({ id, ...props })}
+        {children}
       </IsActiveRowProvider>
     </RowIdContext.Provider>
   );
@@ -77,9 +77,9 @@ const IsActiveCellProvider = ({ children, columnId }) => {
   );
 };
 
-const Cell = ({ columnId, render = props => <td {...props} />, ...props }) => (
+const Cell = ({ columnId, children }) => (
   <IsActiveCellProvider columnId={columnId}>
-    {render(props)}
+    {children}
   </IsActiveCellProvider>
 );
 

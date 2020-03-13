@@ -14,14 +14,22 @@ test("does not default column to active", async () => {
       <table>
         <tbody>
           <HoverTable.Row id="row-one">
-            <HoverTable.Cell columnId="column-one">
-              <div>{cellText}</div>
-              <HoverTable.IsActiveCellContext.Consumer>
-                {({ isActiveColumn }) => (
-                  <div>{isActiveColumn ? testMessage : ""}</div>
-                )}
-              </HoverTable.IsActiveCellContext.Consumer>
-            </HoverTable.Cell>
+            {bind => (
+              <tr {...bind}>
+                <HoverTable.Cell columnId="column-one">
+                  {bind => (
+                    <td {...bind}>
+                      <div>{cellText}</div>
+                      <HoverTable.IsActiveCellContext.Consumer>
+                        {({ isActiveColumn }) => (
+                          <div>{isActiveColumn ? testMessage : ""}</div>
+                        )}
+                      </HoverTable.IsActiveCellContext.Consumer>
+                    </td>
+                  )}
+                </HoverTable.Cell>
+              </tr>
+            )}
           </HoverTable.Row>
         </tbody>
       </table>

@@ -13,13 +13,17 @@ describe("ActiveTable", () => {
         <table>
           <tbody>
             <ActiveTable.Row id="row-one">
-              <ActiveTable.Cell columnId="column-one">
-                <ActiveTable.IsActiveCellContext.Consumer>
-                  {({ isActiveColumn }) => (
-                    <div>{isActiveColumn ? testMessage : ""}</div>
-                  )}
-                </ActiveTable.IsActiveCellContext.Consumer>
-              </ActiveTable.Cell>
+              <tr>
+                <ActiveTable.Cell columnId="column-one">
+                  <td>
+                    <ActiveTable.IsActiveCellContext.Consumer>
+                      {({ isActiveColumn }) => (
+                        <div>{isActiveColumn ? testMessage : ""}</div>
+                      )}
+                    </ActiveTable.IsActiveCellContext.Consumer>
+                  </td>
+                </ActiveTable.Cell>
+              </tr>
             </ActiveTable.Row>
           </tbody>
         </table>
@@ -49,13 +53,17 @@ describe("ActiveTable", () => {
         <table>
           <tbody>
             <ActiveTable.Row id="row-one">
-              <ActiveTable.Cell columnId="column-one">
-                <ActiveTable.IsActiveCellContext.Consumer>
-                  {({ isActiveColumn }) => (
-                    <div>{isActiveColumn ? testMessage : ""}</div>
-                  )}
-                </ActiveTable.IsActiveCellContext.Consumer>
-              </ActiveTable.Cell>
+              <tr>
+                <ActiveTable.Cell columnId="column-one">
+                  <td>
+                    <ActiveTable.IsActiveCellContext.Consumer>
+                      {({ isActiveColumn }) => (
+                        <div>{isActiveColumn ? testMessage : ""}</div>
+                      )}
+                    </ActiveTable.IsActiveCellContext.Consumer>
+                  </td>
+                </ActiveTable.Cell>
+              </tr>
             </ActiveTable.Row>
           </tbody>
         </table>
@@ -98,16 +106,20 @@ describe("ActiveTable", () => {
         <table>
           <tbody>
             <ActiveTable.Row id="row-one">
-              <ActiveTable.Cell columnId="column-one">
-                <ActiveTable.IsActiveCellContext.Consumer>
-                  {({ isActiveColumn, isActive }) => (
-                    <>
-                      <div>{isActiveColumn ? testMessageColumn : ""}</div>
-                      <div>{isActive ? testMessageCell : ""}</div>
-                    </>
-                  )}
-                </ActiveTable.IsActiveCellContext.Consumer>
-              </ActiveTable.Cell>
+              <tr>
+                <ActiveTable.Cell columnId="column-one">
+                  <td>
+                    <ActiveTable.IsActiveCellContext.Consumer>
+                      {({ isActiveColumn, isActive }) => (
+                        <>
+                          <div>{isActiveColumn ? testMessageColumn : ""}</div>
+                          <div>{isActive ? testMessageCell : ""}</div>
+                        </>
+                      )}
+                    </ActiveTable.IsActiveCellContext.Consumer>
+                  </td>
+                </ActiveTable.Cell>
+              </tr>
             </ActiveTable.Row>
           </tbody>
         </table>
@@ -147,14 +159,18 @@ describe("ActiveTable", () => {
           </ActiveTable.SetTableContext.Consumer>
         </div>
         <ActiveTable.TableContext.Consumer>
-            {({activeColumn, activeRow}) => `${activeColumn}, ${activeRow}`}
+          {({ activeColumn, activeRow }) => `${activeColumn}, ${activeRow}`}
         </ActiveTable.TableContext.Consumer>
         <table>
           <tbody>
             <ActiveTable.Row id="row-one">
-              <ActiveTable.Cell columnId="column-one">
-                  Example Cell
-              </ActiveTable.Cell>
+              <tr>
+                <ActiveTable.Cell columnId="column-one">
+                  <td>
+                    Example Cell
+                  </td>
+                </ActiveTable.Cell>
+              </tr>
             </ActiveTable.Row>
           </tbody>
         </table>

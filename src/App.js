@@ -29,20 +29,17 @@ const ActiveCell = props => {
 const ActiveRow = props => {
   const isActiveRow = useContext(HoverTable.IsActiveRowContext);
 
-  return (
-    <StyledRow
-      isActiveRow={isActiveRow}
-      {...props}
-    />
-  );
+  return <StyledRow isActiveRow={isActiveRow} {...props} />;
 };
 
-const CustomCell = props => (
-  <HoverTable.Cell {...props} render={props => <ActiveCell {...props} />} />
+const CustomCell = ({columnId, ...props}) => (
+  <HoverTable.Cell columnId={columnId}>
+    {bind => <ActiveCell {...props} {...bind} />}
+  </HoverTable.Cell>
 );
 
-const CustomRow = props => (
-  <HoverTable.Row {...props} render={props => <ActiveRow {...props} />} />
+const CustomRow = ({id, ...props}) => (
+  <HoverTable.Row id={id}>{bind => <ActiveRow {...props} {...bind} />}</HoverTable.Row>
 );
 
 const CustomTable = props => (
